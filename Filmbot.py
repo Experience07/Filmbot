@@ -22,7 +22,7 @@ def film(update, context):
     update.message.reply_text(f"Сегодня ты смотришь: 🎥 {movie}")
 
 def main():
-    token = "8476573533:AAHr9iIMr1jw-wwJ9YOx3DfRL3tc1iNwGLQ"   # ← ВСТАВИЛ ТВОЙ ТОКЕН
+    token = "8476573533:AAEwO2smXP77_v7PzptHSWC90rzgRvH-cgI"   # ← ВСТАВИЛ ТВОЙ ТОКЕН
 
     updater = Updater(token=token, use_context=True)
     dp = updater.dispatcher
@@ -35,3 +35,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
