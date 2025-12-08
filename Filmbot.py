@@ -1,6 +1,6 @@
+import os
 import random
-from telegram import Update
-from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
+from telegram.ext import Updater, CommandHandler
 
 films = [
     "Гарри Поттер",
@@ -13,22 +13,27 @@ films = [
     "Данила Поперечный: АГЕНТ 813"
 ]
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("Привет! Напиши /film, чтобы я выбрал фильм на сегодня 🎬")
+def start(update, context):
+    update.message.reply_text(
+        "Привет! Напиши /film, чтобы я выбрал фильм на сегодня 🎬"
+    )
 
-async def film(update: Update, context: ContextTypes.DEFAULT_TYPE):
+def film(update, context):
     movie = random.choice(films)
-    await update.message.reply_text(f"Сегодня ты смотришь: 🎥 {movie}")
+    update.message.reply_text(f"Сегодня ты смотришь: 🎥 {movie}")
 
 def main():
+    # Можешь оставить токен ХАРДКОДОМ, раз ты так хочешь:
     token = "8476573533:AAEwO2smXP77_v7PzptHSWC90rzgRvH-cgI"
 
-    app = ApplicationBuilder().token(token).build()
+    updater = Updater(token=token, use_context=True)
+    dp = updater.dispatcher
 
-    app.add_handler(CommandHandler("start", start))
-    app.add_handler(CommandHandler("film", film))
+    dp.add_handler(CommandHandler("start", start))
+    dp.add_handler(CommandHandler("film", film))
 
-    app.run_polling()
+    updater.start_polling()
+    updater.idle()
 
 if __name__ == "__main__":
     main()
