@@ -1,5 +1,6 @@
 import random
-from telegram.ext import Updater, CommandHandler
+from telegram import Update
+from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 
 films = [
     "Гарри Поттер",
@@ -12,27 +13,22 @@ films = [
     "Данила Поперечный: АГЕНТ 813"
 ]
 
-def start(update, context):
-    update.message.reply_text(
-        "Привет! Напиши /film, чтобы я выбрал фильм на сегодня 🎬"
-    )
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("Привет! Напиши /film, чтобы я выбрал фильм на сегодня 🎬")
 
-def film(update, context):
+async def film(update: Update, context: ContextTypes.DEFAULT_TYPE):
     movie = random.choice(films)
-    update.message.reply_text(f"Сегодня ты смотришь: 🎥 {movie}")
+    await update.message.reply_text(f"Сегодня ты смотришь: 🎥 {movie}")
 
 def main():
-    token = "8476573533:AAEwO2smXP77_v7PzptHSWC90rzgRvH-cgI"   # ← ВСТАВИЛ ТВОЙ ТОКЕН
+    token = "8476573533:AAEwO2smXP77_v7PzptHSWC90rzgRvH-cgI"
 
-    updater = Updater(token=token, use_context=True)
-    dp = updater.dispatcher
+    app = ApplicationBuilder().token(token).build()
 
-    dp.add_handler(CommandHandler("start", start))
-    dp.add_handler(CommandHandler("film", film))
+    app.add_handler(CommandHandler("start", start))
+    app.add_handler(CommandHandler("film", film))
 
-    updater.start_polling()
-    updater.idle()
+    app.run_polling()
 
 if __name__ == "__main__":
     main()
-
